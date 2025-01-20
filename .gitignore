@@ -1,0 +1,6 @@
+/package-lock.json
+/scratch.mjs
+/.babelrc
+/.idea/*
+/node_modules/*
+bak.env.bak
