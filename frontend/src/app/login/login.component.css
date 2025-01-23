@@ -1,0 +1,10 @@
+.container {
+  display: flex; /* Enable Flexbox */
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  height: 100vh; /* Make the container full height of the viewport */
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}

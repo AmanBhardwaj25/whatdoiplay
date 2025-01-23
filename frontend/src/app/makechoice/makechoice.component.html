@@ -1,0 +1,35 @@
+<div *ngIf="!showGames">
+  <h1>Select Top Games</h1>
+  <form (ngSubmit)="submitChoice()" #choiceForm="ngForm">
+    <label for="topGames">How many top games do you want to choose from?</label>
+    <input
+      type="number"
+      id="topGames"
+      name="topGames"
+      [(ngModel)]="topGames"
+      required
+      min="1"
+      max="100"
+    />
+    <button type="submit" [disabled]="!choiceForm.valid">Submit</button>
+  </form>
+</div>
+
+<div *ngIf="loading">
+  <p>Loading your games...</p>
+</div>
+
+<div *ngIf="showGames">
+  <h1>Your Top {{ topGames }} Games</h1>
+  <ul>
+    <li *ngFor="let game of filteredGames">
+      <img
+        [src]="'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'"
+        alt="{{ game.name }}"
+        width="50"
+        height="50"
+      />
+      {{ game.name }}
+    </li>
+  </ul>
+</div>

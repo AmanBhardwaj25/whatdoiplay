@@ -1,0 +1,14 @@
+<div *ngIf="user && user.displayName">
+  <h1>Welcome, {{ user.displayName }}!</h1>
+  <img [src]="user.avatar" alt="{{ user.displayName }}'s Avatar" />
+  <p>Your Steam ID: {{ user.steamId }}</p>
+</div>
+
+<div *ngIf="!user || !user.displayName">
+  <p>Loading user information...</p>
+</div>
+
+<div>
+  <button (click)="navigateToMakeChoice()">Go to Make Choice</button>
+</div>
+
