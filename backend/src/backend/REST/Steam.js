@@ -2,7 +2,8 @@ import express from "express"
 import passport from 'passport'
 import session from "express-session"
 import SteamStrategy from "passport-steam"
-import Logic from "../logic/logic.js";
+import Logic from "../logic/logic.js"
+import cors from "cors"
 
 
 const PORT= 5005
@@ -62,6 +63,11 @@ app.use(session({
 // persistent login sessions (recommended).
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.use(cors({
+    origin: 'http://localhost:4200', // Allow requests from Angular app
+    credentials: true // Allow cookies and session data
+}))
 
 app.get('/', function(req, res){
     res.json({ user: req.user })
@@ -153,7 +159,7 @@ app.get('/logout', (req, res, next) => {
 //   the user to steamcommunity.com.  After authenticating, Steam will redirect the
 //   user back to this application at /auth/steam/return
 app.get('/auth/steam',
-    passport.authenticate('steam', { failureRedirect: '/' }),
+    passport.authenticate('steam', { successRedirect: 'http://localhost:4200', failureRedirect: '/' }),
     function(req, res) {
         res.redirect('/')
     })
@@ -165,9 +171,23 @@ app.get('/auth/steam',
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/steam/return',
     passport.authenticate('steam', { failureRedirect: '/' }),
-    function(req, res) {
-        res.redirect('/')
-    })
+    (req, res) => {
+        // Retrieve user details
+        const user = req.user;
+        const callbackUrl = `http://localhost:4200/landing`;
+
+        // Append user details as query parameters
+        const queryParams = new URLSearchParams({
+            steamId: user.id,
+            displayName: user.displayName,
+            avatar: user.photos[0].value // Assuming Steam profile has an avatar URL
+        });
+
+        // Redirect to Angular app with user details
+        res.redirect(`${callbackUrl}?${queryParams.toString()}`);
+    }
+);
+
 
 app.listen(PORT, () => {
     console.log(`Express server listening on port ${PORT}`)

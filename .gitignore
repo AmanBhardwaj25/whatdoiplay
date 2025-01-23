@@ -1,6 +1,6 @@
-/package-lock.json
-/scratch.mjs
-/.babelrc
+/backend/package-lock.json
+/backend/scratch.mjs
+/backend/.babelrc
 /.idea/*
 /node_modules/*
 bak.env.bak
